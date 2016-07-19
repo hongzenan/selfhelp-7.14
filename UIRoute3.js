@@ -1,5 +1,5 @@
-var routerApp = angular.module('App', ['ui.router']);
-routerApp.config(function($stateProvider, $urlRouterProvider) {
+var routerApp = angular.module('App', ['ui.router'])
+.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/index');
     $stateProvider
         .state('index', {
@@ -10,19 +10,35 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
                 },
                 'topbar@index': {
                     templateUrl: 'tpl/topbar.html',
-                    controller: function($scope, $state,$rootScope,$http,$location) {
+                     controller: function($scope, $state,$rootScope,$http,$location,$sce) {
                         $scope.addUserType = function() {
-                            $http.get("message.json").then(function(response){
-                                if($scope.search===undefined){
+							$rootScope.html = "<ul><li>render me please</li></ul>";
+							$rootScope.trustedHtml = $sce.trustAsHtml($rootScope.html);
+							
+                            $http.get("search_result.json").then(function(response){
+                            	/*if($scope.search===undefined){
+                            	}
+                            	else{
+                                $rootScope.message=response.data.content;
+								
+                                $rootScope.title=$scope.search;
+                                $location.path('index/result');
+                            }*/
+							if($scope.search===undefined){
+                            	}else{
+							var message;
+							message = response.data.content;
 
-                                }
-                                else{
-                                    $rootScope.message=response.data.articles;
-                                    $rootScope.title=$scope.search;
-                                    $location.path('index/result');
-                                }
-                            })
-                        }
+							for(var i = 0; i < message.length; i ++) {
+									message[i].content = $sce.trustAsHtml(message[i].content);
+								}
+								$rootScope.message = message;
+								$rootScope.title=$scope.search;
+                                $location.path('index/result');
+								}
+								
+                            });
+                        };
                     }
                 },
                 'main@index': {
@@ -36,72 +52,72 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
                 'main@index': {
                     templateUrl: 'tpl/result.html',
                     controller:function($scope,$http){
-                        $http.get("message.json").then(function (response) {
-//Êı¾İÔ´
-                            $scope.data = response.data.articles;
-//·ÖÒ³×ÜÊı
-                            $scope.pageSize = 10;
-                            $scope.pages = Math.ceil($scope.data.length / $scope.pageSize); //·ÖÒ³Êı
-                            $scope.newPages = $scope.pages > 10 ? 10 : $scope.pages;
-                            $scope.pageList = [];
-                            $scope.selPage = 1;
-//ÉèÖÃ±í¸ñÊı¾İÔ´(·ÖÒ³)
-                            $scope.setData = function () {
-                                $scope.items = $scope.data.slice(($scope.pageSize * ($scope.selPage - 1)), ($scope.selPage * $scope.pageSize));//Í¨¹ıµ±Ç°Ò³ÊıÉ¸Ñ¡³ö±í¸ñµ±Ç°ÏÔÊ¾Êı¾İ
-                            }
-                            $scope.items = $scope.data.slice(0, $scope.pageSize);
-//·ÖÒ³ÒªrepeatµÄÊı×é
-                            for (var i = 0; i < $scope.newPages; i++) {
-                                $scope.pageList.push(i + 1);
-                            }
-//´òÓ¡µ±Ç°Ñ¡ÖĞÒ³Ë÷Òı
-                            $scope.selectPage = function (page) {
-//²»ÄÜĞ¡ÓÚ1´óÓÚ×î´ó
-                                if (page < 1 || page > $scope.pages) return;
-//×î¶àÏÔÊ¾·ÖÒ³Êı5
-                                if (page > 2) {
-//ÒòÎªÖ»ÏÔÊ¾5¸öÒ³Êı£¬´óÓÚ2Ò³¿ªÊ¼·ÖÒ³×ª»»
-                                    var newpageList = [];
-                                    for (var i = (page - 3) ; i < ((page + 2) > $scope.pages ? $scope.pages : (page + 2)) ; i++) {
-                                        newpageList.push(i + 1);
-                                    }
-                                    $scope.pageList = newpageList;
-                                }
-                                $scope.selPage = page;
-                                $scope.setData();
-                                $scope.isActivePage(page);
-                                console.log("Ñ¡ÔñµÄÒ³£º" + page);
-                            };
-//ÉèÖÃµ±Ç°Ñ¡ÖĞÒ³ÑùÊ½
-                            $scope.isActivePage = function (page) {
-                                return $scope.selPage == page;
-                            };
-//ÉÏÒ»Ò³
-                            $scope.Previous = function () {
-                                $scope.selectPage($scope.selPage - 1);
-                            }
-//ÏÂÒ»Ò³
-                            $scope.Next = function () {
-                                $scope.selectPage($scope.selPage + 1);
-                            };
-                        });
-                    }
+$http.get("search_result.json").then(function (response) {
+//æ•°æ®æº
+$scope.data = response.data.content;
+//åˆ†é¡µæ€»æ•°
+$scope.pageSize = 10;
+$scope.pages = Math.ceil($scope.data.length / $scope.pageSize); //åˆ†é¡µæ•°
+$scope.newPages = $scope.pages > 10 ? 10 : $scope.pages;
+$scope.pageList = [];
+$scope.selPage = 1;
+//è®¾ç½®è¡¨æ ¼æ•°æ®æº(åˆ†é¡µ)
+$scope.setData = function () {
+$scope.items = $scope.data.slice(($scope.pageSize * ($scope.selPage - 1)), ($scope.selPage * $scope.pageSize));//é€šè¿‡å½“å‰é¡µæ•°ç­›é€‰å‡ºè¡¨æ ¼å½“å‰æ˜¾ç¤ºæ•°æ®
+}
+$scope.items = $scope.data.slice(0, $scope.pageSize);
+//åˆ†é¡µè¦repeatçš„æ•°ç»„
+for (var i = 0; i < $scope.newPages; i++) {
+$scope.pageList.push(i + 1);
+}
+//æ‰“å°å½“å‰é€‰ä¸­é¡µç´¢å¼•
+$scope.selectPage = function (page) {
+//ä¸èƒ½å°äº1å¤§äºæœ€å¤§
+if (page < 1 || page > $scope.pages) return;
+//æœ€å¤šæ˜¾ç¤ºåˆ†é¡µæ•°5
+if (page > 2) {
+//å› ä¸ºåªæ˜¾ç¤º5ä¸ªé¡µæ•°ï¼Œå¤§äº2é¡µå¼€å§‹åˆ†é¡µè½¬æ¢
+var newpageList = [];
+for (var i = (page - 3) ; i < ((page + 2) > $scope.pages ? $scope.pages : (page + 2)) ; i++) {
+newpageList.push(i + 1);
+}
+$scope.pageList = newpageList;
+}
+$scope.selPage = page;
+$scope.setData();
+$scope.isActivePage(page);
+console.log("é€‰æ‹©çš„é¡µï¼š" + page);
+};
+//è®¾ç½®å½“å‰é€‰ä¸­é¡µæ ·å¼
+$scope.isActivePage = function (page) {
+return $scope.selPage == page;
+};
+//ä¸Šä¸€é¡µ
+$scope.Previous = function () {
+$scope.selectPage($scope.selPage - 1);
+}
+//ä¸‹ä¸€é¡µ
+$scope.Next = function () {
+$scope.selectPage($scope.selPage + 1);
+};
+});
+}
                 }
             }
         })
-        .state('index.result.detail', {
+          .state('index.result.detail', {
             url: '/result/detail?type',
             views: {
                 'main@index': {
                     templateUrl: 'tpl/detail.html',
-                    controller: function($scope,$stateParams,$rootScope) {
-                        $rootScope.id=$stateParams.type;
+                        controller: function($scope,$stateParams,$rootScope) {
+                            $rootScope.id=$stateParams.type;  
                     }
-
+                    
                 }
             }
         })
-        .state('index.result.detail1', {
+             .state('index.result.detail1', {
             url: '/result/detail1',
             views: {
                 'main@index': {
@@ -109,7 +125,7 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
         })
-        .state('index.result.detail2', {
+                .state('index.result.detail2', {
             url: '/result/detail2',
             views: {
                 'main@index': {
@@ -117,8 +133,8 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
         })
+          
 
-
-
+       
 });
 

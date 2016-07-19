@@ -11,18 +11,18 @@
         <br/>
 
         <div ng-repeat="x in message|filter:id">
-
+        
             <br/>
             <br/>
 
             <div>
-                <h2 style="color:#3399FF">{{ x.title }}</h2>
-            </div>
-            <br/>
-            <p style="font-size:20px;color:#000000;">
-                {{ x.content }}
-            </p>
-            <br/>
+					<h2 style="color:#3399FF">{{ x.title }}</h2>
+				</div>
+				<br/>
+				<p style="font-size:20px;color:#000000;">
+					{{ x.hitFragment }}
+				</p>
+				<br/>
             <!--body begin-->
             <ul class="nav nav-tabs">
                 <li  ><a data-toggle="#tab" ui-sref="index.result.detail({type:id})">Text</a></li>
@@ -34,28 +34,28 @@
                 <div id="Text" class="tab-pane fade in active">
                     <br/>
                     <br/>
-
-                    <p>{{ x.content }}</p>
+                 
+                    <div ng-bind-html="x.content"></div>
                     <br/>
                     <br/>
                     <br/>
-
+                   
                     <br/>
                     <br/>
                     <br/>
-
+            
                     <br/>
                     <br/>
                     <br/>
                     <br/>
                     <br/>
                 </div>
-
-
+             
+              
             </div>
-
-            </br>
-
+         
+             </br>
+			
             <div class="inline topBorder">
                 <span class="label label-default">Content Sharing</span>
                 &nbsp;&nbsp;
@@ -63,15 +63,15 @@
                 &nbsp;&nbsp;
                 <span class="label label-default">Windows</span>
                 &nbsp;&nbsp;
-                <span class="label label-default">User</span>
-                &nbsp;&nbsp;
-                <label style="float:right">1803 views</label>
+					  <span class="label label-default">User</span>
+					  &nbsp;&nbsp;
+					  <label style="float:right">1803 views</label>
             </div>
-            </br>
+        </br>
         </div>
     </div>
     <div class="col-md-4 leftBorder">
-
+     
         <div class="leftPadding bottomBorder">
             <br/>
             <br/>
@@ -80,7 +80,7 @@
             </h4>
             <br/>
         </div>
-
+  
         <div class="leftPadding bottomBorder">
             <br/>
             <h4>Languages</h4>
@@ -131,10 +131,10 @@
 </div>
 
 <div  class=" col-md-12" style="background-color:#CCCCCC;border-bottom:solid 1px black";>
-    <h1 style="margin-top:100px" align ="center">Still can't find what you are looking for?</h1>
-    <button style="margin-top:130px;margin-bottom:30px" type="button"  class="btn btn-danger col-md-offset-5">Contact Support</button>
+<h1 style="margin-top:100px" align ="center">Still can't find what you are looking for?</h1>
+<button style="margin-top:130px;margin-bottom:30px" type="button"  class="btn btn-danger col-md-offset-5">Contact Support</button>
 </div>
 <!-- footer-->
 <div class="col-md-12" style="background-color:#CCCCCC";>
-    <p class="text-center">Copyright &copy; 2016.Cisco All rights reserved.</p>
+<p class="text-center">Copyright &copy; 2016.Cisco All rights reserved.</p>
 </div>
